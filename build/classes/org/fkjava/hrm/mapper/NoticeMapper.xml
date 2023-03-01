@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fkjava.hrm.mapper.NoticeMapper">
+
+   <!-- 获取公告总记录数 -->
+   <select id="findTotalNum" resultType="int">
+       select count(*) from hrm_notice 
+       <where>
+          <if test="notice!=null and notice.title!=null and notice.title !='' ">
+                title like concat("%",#{notice.title},"%")
+          </if>
+       </where>
+   </select>
+   
+   
+   <!-- 分页查询 -->
+   <select id="selectNoticeByPage" resultMap="NoticeMapper">
+       select * from hrm_notice 
+        <where>
+          <if test="notice!=null and notice.title!=null and notice.title !='' ">
+                title like concat("%",#{notice.title},"%")
+          </if>
+       </where>
+       
+       limit #{pageModel.startPageSize},#{pageModel.pageSize}
+   </select>
+   
+   <!-- 字段映射 -->
+   <resultMap type="Notice" id="NoticeMapper">
+       <result column="create_date" property="createDate"/>
+       <association property="user" column="user_id" select="org.fkjava.hrm.mapper.UserMapper.getUserById"></association>
+   </resultMap>
+   
+   <!-- 删除公告 -->
+   <delete id="deleteNoticeByIds">
+      delete from hrm_notice where id in
+      
+       <foreach item="id"  collection="ids" open="(" separator="," close=")">
+        #{id}
+  </foreach>
+   </delete>
+</mapper>

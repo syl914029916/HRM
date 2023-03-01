@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.fkjava.hrm.mapper.EmployeeMapper">
+
+     <!-- 获取员工总记录数 -->
+   <select id="findTotalNum" resultType="int">
+       select count(*) from hrm_employee 
+        <include refid="commonSql"/>
+   </select>
+   
+   
+   <!-- 分页查询 -->
+   <select id="selectEmployeeByPage" resultMap="EmployeeMapper">
+       select * from hrm_employee 
+       
+       <include refid="commonSql"/>
+       
+       limit #{pageModel.startPageSize},#{pageModel.pageSize}
+   </select>
+   
+   <!-- 提取公告sql语句 -->
+   <sql id="commonSql">
+         <where>
+             <if test="employee !=null and employee.name!=null and employee.name != '' ">
+                and name like concat("%",#{employee.name},"%")
+             </if> 
+             <if test="employee !=null and employee.phone!=null and employee.phone != '' ">
+                 and phone like concat("%",#{employee.phone},"%")
+             </if>
+             <if test="employee !=null and employee.cardId!=null and employee.cardId != '' ">
+                 and card_id like concat("%",#{employee.cardId},"%")
+             </if>
+             <if test="employee !=null and employee.sex &gt; 0 ">
+                 and sex =  #{employee.sex}
+             </if>
+             <if test="employee !=null and employee.deptId &gt; 0 ">
+                 and dept_id =  #{employee.deptId}
+             </if>
+             <if test="employee !=null and employee.jobId &gt; 0 ">
+                 and job_id =  #{employee.jobId}
+             </if>
+                 
+       </where>
+   </sql>
+   
+   <!-- 字段映射 -->
+   <resultMap type="Employee" id="EmployeeMapper">
+       <result column="create_date" property="createDate"/>
+       <result column="card_id" property="cardId"/>
+       <result column="post_code" property="postCode"/>
+       
+       <association property="dept" column="dept_id" select="org.fkjava.hrm.mapper.DeptMapper.getDeptById"></association>
+       <association property="job" column="job_id" select="org.fkjava.hrm.mapper.JobMapper.getJobById"></association>
+   </resultMap>
+   
+   <!-- 获取需要导出的员工信息 -->
+   <select id="getEmpByDatas" resultType="Employee_demo"> 
+        select  e.id,e.name,e.sex,e.phone,e.email,d.name as dept,e.education,e.card_id as cardId,j.name as job,e.address,e.create_date as createDate
+        from hrm_employee e,hrm_job j,hrm_dept d  where e.job_id = j.id and e.dept_id = d.id
+        <if test="name!=null and name != '' ">
+                and e.name like concat("%",#{name},"%")
+             </if> 
+             <if test="phone!=null and phone != '' ">
+                 and e.phone like concat("%",#{phone},"%")
+             </if>
+             <if test="cardId!=null and cardId != '' ">
+                 and e.card_id like concat("%",#{cardId},"%")
+             </if>
+             <if test="sex &gt; 0 ">
+                 and e.sex =  #{sex}
+             </if>
+             <if test="deptId &gt; 0 ">
+                 and e.dept_id =  #{deptId}
+             </if>
+             <if test="jobId &gt; 0 ">
+                 and e.job_id =  #{jobId}
+             </if>
+   
+   </select>
+   
+   
+   <!-- 保存员工 -->
+   <insert id="addEmp">
+       insert into hrm_employee (DEPT_ID, JOB_ID, NAME, CARD_ID,
+					 ADDRESS, POST_CODE, TEL, PHONE, QQ_NUM, EMAIL, 
+					 SEX, PARTY, BIRTHDAY, RACE, EDUCATION, SPECIALITY, 
+					 PICTURE, HOBBY, REMARK, CREATE_DATE) 
+			   values(#{dept.id},#{job.id},#{name},#{cardId},
+			          #{address},#{postCode},#{tel},#{phone},#{qqNum},
+			          #{email},#{sex},#{party},#{birthday},#{race},#{education},
+			          #{speciality},#{picture},#{hobby},#{remark},#{createDate})  </insert>
+			          
+  <!-- 根据员工id获取员工信息 -->
+  <select id="getEmpById" resultMap="EmployeeMapper">
+     select * from hrm_employee where id = #{id}
+  </select>
+  
+  
+  <update id="updateEmp">
+      update hrm_employee 
+			set DEPT_ID = #{dept.id},
+			    JOB_ID = #{job.id}, 
+			    NAME = #{name}, 
+			    CARD_ID = #{cardId},
+				ADDRESS = #{address}, 
+				POST_CODE = #{postCode}, 
+				TEL = #{tel}, 
+				PHONE = #{phone}, 
+				QQ_NUM = #{qqNum}, 
+				EMAIL = #{email}, 
+				SEX = #{sex}, 
+				PARTY = #{party}, 
+				BIRTHDAY = #{birthday}, 
+				RACE = #{race}, 
+				EDUCATION = #{education}, 
+				SPECIALITY = #{speciality}, 
+				PICTURE = #{picture}, 
+				HOBBY = #{hobby}, 
+				REMARK = #{remark}
+			where id= #{id}
+  </update>
+</mapper>

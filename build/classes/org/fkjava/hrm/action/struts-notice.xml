@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="notice" namespace="/notice" extends="hrm">
+    
+        <!-- 公告分页查询 -->
+        <action name="selectNotice" class="org.fkjava.hrm.action.NoticeAction"  method="selectNoticeByPage">
+           <result>/WEB-INF/jsp/notice/notice.jsp</result>
+        </action>
+        
+        
+        <!-- 删除公告 -->  
+        <action name="deleteNoticeByIds" class="org.fkjava.hrm.action.NoticeAction"  method="deleteNoticeByIds">
+            <result type="chain">selectNotice</result>
+        </action>
+        
+        
+        <!-- 跳转至添加公告jsp页面 -->
+        <action name="showAddNotice">
+             <result>/WEB-INF/jsp/notice/addNotice.jsp</result>
+        </action>
+        
+        <!-- 添加公告 -->
+        <action name="addNotice" class="org.fkjava.hrm.action.NoticeAction"  method="addNotice">
+               <!-- 引入防表单重复提交拦截器 -->
+               <interceptor-ref name="token"></interceptor-ref>
+               <interceptor-ref name="loginStack"></interceptor-ref>
+              <result>/WEB-INF/jsp/notice/addNotice.jsp</result>
+              <!-- 如果表单重复提交  token拦截器会返回  invalid.token -->
+              <result name="invalid.token">/WEB-INF/jsp/notice/addNotice.jsp</result>
+        </action>
+        
+        <!-- 跳转至修改公告页面 -->
+        <action name="showUpdateNotice" class="org.fkjava.hrm.action.NoticeAction"  method="showUpdateNotice">
+             <result>/WEB-INF/jsp/notice/updateNotice.jsp</result>
+        </action>
+        
+         <!-- 更新公告 -->
+        <action name="updateNotice" class="org.fkjava.hrm.action.NoticeAction"  method="updateNotice">
+               <!-- 引入防表单重复提交拦截器 -->
+               <interceptor-ref name="token"></interceptor-ref>
+               <interceptor-ref name="loginStack"></interceptor-ref>
+              <result>/WEB-INF/jsp/notice/updateNotice.jsp</result>
+              <!-- 如果表单重复提交  token拦截器会返回  invalid.token -->
+              <result name="invalid.token">/WEB-INF/jsp/notice/updateNotice.jsp</result>
+        </action>
+        
+        <!-- 预览公告 -->
+        <action name="prevNotice" class="org.fkjava.hrm.action.NoticeAction"  method="prevNotice">
+           <result>/WEB-INF/jsp/notice/prevNotice.jsp</result>
+        </action>
+        
+        <!-- 文件异步上传 -->  
+        <action name="fileUpload" class="org.fkjava.hrm.action.NoticeAction"  method="fileUpload"></action>
+    </package>
+    
+</struts>

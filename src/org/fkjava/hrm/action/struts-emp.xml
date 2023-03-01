@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="emp" namespace="/emp" extends="hrm">
+    
+       <!-- 员工分页查询 -->
+       <action name="selectEmp" class="org.fkjava.hrm.action.EmployeeAction" method="selectEmpByPage">
+           <result>/WEB-INF/jsp/emp/employee.jsp</result>
+       </action>
+       <!-- 删除员工信息 -->
+       <action name="deleteEmp" class="org.fkjava.hrm.action.EmployeeAction" method="deleteEmp">
+           <result type="chain">selectEmp</result> 
+       </action>
+        
+        
+        <!-- 导出员工信息至excel文件 -->
+        <action name="downDataToExcel" class="org.fkjava.hrm.action.EmployeeAction" method="downDataToExcel"></action>
+   
+        <!-- 跳转至添加员工页面 -->
+        <action name="showAddEmp">
+            <result>/WEB-INF/jsp/emp/addEmployee.jsp</result>
+        </action>
+   
+   
+         <!-- 异步加载部门以及职位信息 -->
+         <action name="ajaxLoadDeptAndJob" class="org.fkjava.hrm.action.EmployeeAction" method="ajaxLoadDeptAndJob"></action>
+       
+          <!-- 添加员工 -->
+           <action name="addEmp" class="org.fkjava.hrm.action.EmployeeAction"  method="addEmp">
+               <!-- 引入防表单重复提交拦截器 -->
+               <interceptor-ref name="token"></interceptor-ref>
+               <interceptor-ref name="loginStack"></interceptor-ref>
+              <result>/WEB-INF/jsp/emp/addEmployee.jsp</result>
+              <!-- 如果表单重复提交  token拦截器会返回  invalid.token -->
+              <result name="invalid.token">/WEB-INF/jsp/emp/addEmployee.jsp</result>
+        </action>
+        
+          <!-- 跳转至修改员工页面 -->
+        <action name="showUpdateEmp" class="org.fkjava.hrm.action.EmployeeAction"  method="showUpdateEmp">
+            <result>/WEB-INF/jsp/emp/updateEmployee.jsp</result>
+        </action>
+        
+        <!-- 修改员工 -->
+         <action name="updateEmp" class="org.fkjava.hrm.action.EmployeeAction"  method="updateEmp">
+               <!-- 引入防表单重复提交拦截器 -->
+               <interceptor-ref name="token"></interceptor-ref>
+               <interceptor-ref name="loginStack"></interceptor-ref>
+              <result>/WEB-INF/jsp/emp/updateEmployee.jsp</result>
+              <!-- 如果表单重复提交  token拦截器会返回  invalid.token -->
+              <result name="invalid.token">/WEB-INF/jsp/emp/updateEmployee.jsp</result>
+        </action>
+    
+    </package>
+    
+</struts>

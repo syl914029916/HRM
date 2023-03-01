@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 配置Struts2常量 -->
+    <constant name="struts.enable.DynamicMethodInvocation" value="false"/>
+    <constant name="struts.devMode" value="true" />
+    <!-- 指定允许的访问后缀  -->
+    <constant name="struts.action.extension" value="action"/>
+    
+    <!-- 指定国际化资源文件的前缀 -->
+    <constant name="struts.custom.i18n.resources" value="hrm_message"></constant>
+    
+        
+    <!-- 限制文件上传的大小 -->
+    <constant name="struts.multipart.maxSize" value="10097152"></constant>
+
+    <package name="hrm" namespace="/" extends="struts-default">
+    
+       <!-- 声明拦截器 -->
+       <interceptors>
+          <interceptor name="loginInterceptor" class="org.fkjava.hrm.filter.LoginInteceptor"></interceptor>
+          <interceptor-stack name="loginStack">
+              <interceptor-ref name="loginInterceptor"></interceptor-ref>
+              <interceptor-ref name="defaultStack"></interceptor-ref>
+          </interceptor-stack>
+       </interceptors>
+    
+    
+       <!-- 声明项目默认拦截器栈 -->
+        <default-interceptor-ref name="loginStack"></default-interceptor-ref>
+        
+        <!-- 定义全局result -->
+        <global-results>
+           <result name="login">/WEB-INF/jsp/login.jsp</result>
+           <result name="error">/WEB-INF/jsp/error.jsp</result>
+           
+        </global-results>
+        
+        <!-- 配置全局Exception -->
+        <global-exception-mappings>
+           <exception-mapping result="error" exception="java.lang.Exception"></exception-mapping>
+        </global-exception-mappings>
+        
+        <!--配置全局action  http://127.0.0.1:8080/Hrm/main.action    /WEB-INF/jsp/main.jsp -->
+       <action name="*">
+         <result>/WEB-INF/jsp/{1}.jsp</result>
+       </action>
+       
+       <!-- 生成验证码 -->
+      <action name="verifyCode" class="org.fkjava.hrm.util.VerifyServlet">
+         <interceptor-ref name="defaultStack"></interceptor-ref>
+      </action>
+        
+    </package>
+    
+    <!-- 引入项目不同模块的struts配置文件 --> 
+    <include file="org/fkjava/hrm/action/struts-user.xml"></include>
+    <include file="org/fkjava/hrm/action/struts-notice.xml"></include>
+    <include file="org/fkjava/hrm/action/struts-document.xml"></include>
+    <include file="org/fkjava/hrm/action/struts-emp.xml"></include>
+     <include file="org/fkjava/hrm/action/struts-dept.xml"></include>
+     <include file="org/fkjava/hrm/action/struts-job.xml"></include>
+</struts>

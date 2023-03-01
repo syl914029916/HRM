@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!DOCTYPE taglib
+        PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+        "http://java.sun.com/j2ee/dtd/web-jsptaglibrary_1_2.dtd">
+
+<taglib>
+  <!--标签版本  -->
+  <tlib-version>1.0</tlib-version>
+  <!-- jsp版本 -->
+  <jsp-version>1.2</jsp-version>
+  <!-- 标签简称 -->
+  <short-name>simple</short-name>
+  <!-- 页面可以通过该uri地址找到自定义标签 -->
+  <uri>/page-tag</uri>
+  <!-- 标签描述信息 -->
+  <description>
+    HRM人力资源管理系统，分页标签，牛逼！
+  </description>
+
+  <!-- 指定标签信息 -->
+  <tag>
+  <!-- 标签名字 -->
+    <name>pager</name>
+    <!-- 标签处理类的位置 -->
+    <tag-class>org.fkjava.hrm.util.webTag.PageTag</tag-class>
+    <!-- 描述信息 -->
+    <description> Display JSP sources </description>
+    <!-- 指定标签属性 -->
+    <attribute>
+    <!-- 属性名 -->
+       <name>pageIndex</name>
+       <!-- 是否必填 -->
+       <required>true</required>
+       <!-- 是否支持EL表达式 -->
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    
+    <attribute>
+    <!-- 属性名 -->
+       <name>pageSize</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+    <!-- 属性名 -->
+       <name>recordCount</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+    <!-- 属性名 -->
+       <name>submitUrl</name>
+       <required>true</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    
+    <attribute>
+    <!-- 属性名 -->
+       <name>pageStyle</name>
+       <required>false</required>
+       <rtexprvalue>true</rtexprvalue>
+    </attribute>
+  </tag>
+</taglib>

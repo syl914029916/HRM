@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="user" namespace="/user" extends="hrm">
+    
+        <!-- 用户异步登录 -->
+        <action name="userLogin" class="org.fkjava.hrm.action.UserAction" method="userLogin">
+           <interceptor-ref name="defaultStack"></interceptor-ref>
+        </action>
+        
+        
+        <!-- 用户退出 -->
+        <action name="userLogout" class="org.fkjava.hrm.action.UserAction" method="userLogout">
+           
+        </action>
+        
+    </package>
+    
+</struts>

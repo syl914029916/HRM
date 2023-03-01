@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="document" namespace="/document" extends="hrm">
+    
+        <!-- 文档分页查询 -->
+        <action name="selectDocument" class="org.fkjava.hrm.action.DocumentAction"  method="selectDocumentByPage">
+           <result>/WEB-INF/jsp/document/document.jsp</result>
+        </action>
+        
+        <!-- 删除文档 -->
+        <action name="deleteDocumentById" class="org.fkjava.hrm.action.DocumentAction"  method="deleteDocumentById">
+           <result type="chain">selectDocument</result>
+        </action>
+        
+        
+        <!-- 跳转至添加文档页面 -->
+        <action name="showAddDocument">
+             <result>/WEB-INF/jsp/document/addDocument.jsp</result>
+        </action>
+
+        <!-- 上传文件 -->
+        <action name="addDocument" class="org.fkjava.hrm.action.DocumentAction" method="addDocument">
+            <!-- 方表单重复提交拦截器 -->
+            <interceptor-ref name="token"></interceptor-ref>
+            <interceptor-ref name="fileUpload">
+                 <!-- 限制文件的后缀 -->
+                 <param name="allowedExtensions">.doc,.docx,.xls,.xlsx,.txt,.ppt,.pptx</param>
+                 <!-- 限制上传的文件的大小    局部配置的大小不能超过全局的，如果超过则以全局的为准-->
+                 <param name="maximumSize">1097152</param>
+            </interceptor-ref>
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            
+            <result>/WEB-INF/jsp/document/addDocument.jsp</result>
+            <!--表单重复提交  -->
+             <result name="invalid.token">/WEB-INF/jsp/document/addDocument.jsp</result>
+             <!-- 文件格式等不符合要求时，fileUpload返回input -->
+             <result name="input">/WEB-INF/jsp/document/addDocument.jsp</result>
+            
+        
+        </action>
+        
+        <!-- 跳转至修改文档页面 -->
+        <action name="showUpdateDocument"  class="org.fkjava.hrm.action.DocumentAction" method="showUpdateDocument">
+            <result>/WEB-INF/jsp/document/updateDocument.jsp</result>
+        </action>
+        
+        
+         <!-- 修改文档 -->
+        <action name="updateDocument" class="org.fkjava.hrm.action.DocumentAction" method="updateDocument">
+            <!-- 方表单重复提交拦截器 -->
+            <interceptor-ref name="token"></interceptor-ref>
+            <interceptor-ref name="fileUpload">
+                 <!-- 限制文件的后缀 -->
+                 <param name="allowedExtensions">.doc,.docx,.xls,.xlsx,.txt,.ppt,.pptx</param>
+                 <!-- 限制上传的文件的大小    局部配置的大小不能超过全局的，如果超过则以全局的为准-->
+                 <param name="maximumSize">1097152</param>
+            </interceptor-ref>
+            <interceptor-ref name="loginStack"></interceptor-ref>
+            
+            <result>/WEB-INF/jsp/document/updateDocument.jsp</result>
+            <!--表单重复提交  -->
+             <result name="invalid.token">/WEB-INF/jsp/document/updateDocument.jsp</result>
+             <!-- 文件格式等不符合要求时，fileUpload返回input -->
+             <result name="input">/WEB-INF/jsp/document/updateDocument.jsp</result>
+            
+        
+        </action>
+        
+        <!-- 下载文档 -->
+        <action name="downFile" class="org.fkjava.hrm.action.DocumentAction" method="downFile">
+             <result  type="stream">
+                 <!-- 指定下载的文件类型    application/octet-stream：以二进行流的形式将数据响应至客户端-->
+                 <param name="contentType">application/octet-stream</param>
+                   <!-- 调用后台的哪一个方法进行文件下载     会调用org.fkjava.hrm.action.DocumentAction中的getInputStream()-->
+				  <param name="inputName">inputStream</param>
+				  <!-- attachment:指定以附件的形式保存   inline:在线打开  filename="document.pdf"：指定下载的文件名   
+				   filename="${picFileName}":调用org.fkjava.hrm.action.DocumentAction的getPicFileName方法获取下载的文件名 -->
+				  <param name="contentDisposition">attachment;filename="${picFileName}"</param>
+				  <!-- 缓冲大小 -->
+				  <param name="bufferSize">1024</param>
+             </result>
+             
+             <result name="input" type="chain">selectDocument</result>
+        </action>
+    </package>
+    
+</struts>

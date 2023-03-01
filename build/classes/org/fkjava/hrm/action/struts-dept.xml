@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	
+    <package name="dept" namespace="/dept" extends="hrm">
+    
+        <!-- 部门分页查询 -->
+        <action name="selectDept" class="org.fkjava.hrm.action.DeptAction"  method="selectDeptByPage">
+           <result>/WEB-INF/jsp/dept/dept.jsp</result>
+        </action>
+        
+        
+        <!-- 删除部门-->  
+        <action name="depeteDept" class="org.fkjava.hrm.action.DeptAction"  method="deleteDeptById">
+            <result type="chain">selectDept</result>
+        </action>
+        
+        
+        <!-- 跳转至修改部门页面 -->
+        <action name="showUpdateDept" class="org.fkjava.hrm.action.DeptAction"  method="showUpdateDept">
+             <result>/WEB-INF/jsp/dept/updateDept.jsp</result>
+        </action>
+        
+         <!-- 更新部门 -->
+        <action name="updateDept" class="org.fkjava.hrm.action.DeptAction"  method="updateDept">
+               <!-- 引入防表单重复提交拦截器 -->
+               <interceptor-ref name="token"></interceptor-ref>
+               <interceptor-ref name="loginStack"></interceptor-ref>
+              <result>/WEB-INF/jsp/dept/updateDept.jsp</result>
+              <!-- 如果表单重复提交  token拦截器会返回  invalid.token -->
+              <result name="invalid.token">/WEB-INF/jsp/dept/updateDept.jsp</result>
+        </action>
+        
+         <!-- 跳转至添加部门jsp页面 -->
+        <action name="showAddDept" >
+             <result>/WEB-INF/jsp/dept/addDept.jsp</result>
+        </action>
+        
+        <!-- 添加部门 -->
+        <action name="addDept" class="org.fkjava.hrm.action.DeptAction"  method="addDept">
+               <!-- 引入防表单重复提交拦截器 -->
+               <interceptor-ref name="token"></interceptor-ref>
+               <interceptor-ref name="loginStack"></interceptor-ref>
+              <result>/WEB-INF/jsp/dept/addDept.jsp</result>
+              <!-- 如果表单重复提交  token拦截器会返回  invalid.token -->
+              <result name="invalid.token">/WEB-INF/jsp/dept/addDept.jsp</result>
+        </action>
+    </package>
+    
+</struts>

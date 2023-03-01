@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE dwr PUBLIC
+    "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN"
+    "http://getahead.org/dwr/dwr30.dtd">
+
+<dwr>
+   
+
+  <allow>
+       
+    <!--  
+    value="org.fkjava.hrm.util.dwr.FileUpload":后台处理类，需要指定包名+类名
+    name="class"：表示被转换的是一个类
+    javascript="fileUpload"：在前台页面，可以使用什么样的js对象来调用后台类
+    creator="new"：每次调用目标类都会创建一次对象
+    -->
+    <create creator="new" javascript="fileUpload">
+      <param name="class" value="org.fkjava.hrm.util.dwr.FileUpload"/>
+    </create>
+
+  </allow>
+
+</dwr>
